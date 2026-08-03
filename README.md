@@ -1,7 +1,5 @@
 # 🎓 Student Record Management System
 
-https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=26&duration=3000&pause=1000&color=38BDF8&center=true&vCenter=true&width=750&lines=Pure+HTML5,+CSS3+%26+JavaScript;Student+Profiles+and+Performance+Metrics;Zero+Dependencies+%26+LocalStorage+Persistence" alt="Student Record Management System Typing SVG" />
-
 ### 🤖 *A lightweight, modern web-based application designed to manage student profiles, academic records, and performance metrics*
 
 
