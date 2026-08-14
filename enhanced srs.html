@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Record Management System</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --warning: #f59e0b;
+      --warning-hover: #d97706;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2.25rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+    }
+
+    /* Stats Row */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-card span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card h3 {
+      font-size: 1.75rem;
+      color: var(--text);
+      margin-top: 0.3rem;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--primary);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: #64748b;
+      margin-top: 0.5rem;
+    }
+    .btn-secondary:hover {
+      background-color: #475569;
+    }
+
+    .controls-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .search-box input, .filter-box select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+    }
+
+    .filter-box {
+      width: 160px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    th:hover {
+      color: var(--primary);
+    }
+
+    tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge-pass { background-color: #dcfce7; color: #15803d; }
+    .badge-fail { background-color: #fee2e2; color: #b91c1c; }
+
+    .action-btns {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .btn-action {
+      border: none;
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: white;
+    }
+
+    .btn-edit { background-color: var(--warning); }
+    .btn-edit:hover { background-color: var(--warning-hover); }
+
+    .btn-delete { background-color: var(--danger); }
+    .btn-delete:hover { background-color: var(--danger-hover); }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Student Record Portal</h1>
+      <p>Advanced student details management system with live statistics & sorting</p>
+    </header>
+
+    <!-- Statistics Overview Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span>Total Students</span>
+        <h3 id="statTotal">0</h3>
+      </div>
+      <div class="stat-card">
+        <span>Average Marks</span>
+        <h3 id="statAvg">0%</h3>
+      </div>
+      <div class="stat-card">
+        <span>Pass Percentage</span>
+        <h3 id="statPassRate">0%</h3>
+      </div>
+    </div>
+
+    <div class="grid-container">
+      <!-- Left Column: Registration / Edit Form -->
+      <div class="card">
+        <h2 id="formTitle">Add New Student</h2>
+        <form id="studentForm">
+          <input type="hidden" id="editIndex" value="-1">
+          
+          <div class="form-group">
+            <label for="studentName">Full Name</label>
+            <input type="text" id="studentName" placeholder="e.g., Aarav Sharma" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="rollNo">Roll Number</label>
+            <input type="number" id="rollNo" placeholder="e.g., 101" required>
+          </div>
+
+          <div class="form-group">
+            <label for="branch">Branch</label>
+            <select id="branch" required>
+              <option value="">Select Branch</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mechanical">Mechanical</option>
+              <option value="Civil">Civil</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="marks">Marks (%)</label>
+            <input type="number" id="marks" min="0" max="100" placeholder="e.g., 85" required>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn">Add Student</button>
+          <button type="button" id="cancelBtn" class="btn btn-secondary" style="display: none;" onclick="resetForm()">Cancel Edit</button>
+        </form>
+      </div>
+
+      <!-- Right Column: Student List Table & Controls -->
+      <div class="card">
+        <h2>
+          <span>Student Directory</span>
+        </h2>
+        
+        <div class="controls-bar">
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by name or roll number...">
+          </div>
+          <div class="filter-box">
+            <select id="branchFilter">
+              <option value="">All Branches</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mechanical">Mechanical</option>
+              <option value="Civil">Civil</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="sortTable('id')">Roll No ↕</th>
+                <th onclick="sortTable('name')">Name ↕</th>
+                <th onclick="sortTable('branch')">Branch ↕</th>
+                <th onclick="sortTable('marks')">Marks ↕</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody">
+              <!-- Dynamic Rows Added Here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const initialStudents = [
+      { id: 101, name: "Aarav Sharma", branch: "Computer Science", marks: 92 },
+      { id: 102, name: "Priya Patel", branch: "Information Technology", marks: 88 },
+      { id: 103, name: "Rohan Verma", branch: "Mechanical", marks: 38 },
+      { id: 104, name: "Ananya Iyer", branch: "Electronics", marks: 95 }
+    ];
+
+    let students = JSON.parse(localStorage.getItem('student_records_v2')) || initialStudents;
+    let currentSort = { column: 'id', asc: true };
+
+    const studentForm = document.getElementById('studentForm');
+    const studentTableBody = document.getElementById('studentTableBody');
+    const searchInput = document.getElementById('searchInput');
+    const branchFilter = document.getElementById('branchFilter');
+    const formTitle = document.getElementById('formTitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const editIndexInput = document.getElementById('editIndex');
+
+    function saveToLocalStorage() {
+      localStorage.setItem('student_records_v2', JSON.stringify(students));
+    }
+
+    function updateStats() {
+      const total = students.length;
+      document.getElementById('statTotal').innerText = total;
+
+      if (total === 0) {
+        document.getElementById('statAvg').innerText = '0%';
+        document.getElementById('statPassRate').innerText = '0%';
+        return;
+      }
+
+      const totalMarks = students.reduce((acc, curr) => acc + curr.marks, 0);
+      const avgMarks = (totalMarks / total).toFixed(1);
+      document.getElementById('statAvg').innerText = avgMarks + '%';
+
+      const passCount = students.filter(s => s.marks >= 40).length;
+      const passRate = ((passCount / total) * 100).toFixed(0);
+      document.getElementById('statPassRate').innerText = passRate + '%';
+    }
+
+    function renderStudents(dataToDisplay = students) {
+      studentTableBody.innerHTML = '';
+
+      if (dataToDisplay.length === 0) {
+        studentTableBody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty-state">No student records found.</td>
+          </tr>`;
+        updateStats();
+        return;
+      }
+
+      dataToDisplay.forEach((student) => {
+        const isPassed = student.marks >= 40;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>#${student.id}</strong></td>
+          <td>${student.name}</td>
+          <td>${student.branch}</td>
+          <td>${student.marks}%</td>
+          <td>
+            <span class="badge ${isPassed ? 'badge-pass' : 'badge-fail'}">
+              ${isPassed ? 'Pass' : 'Fail'}
+            </span>
+          </td>
+          <td>
+            <div class="action-btns">
+              <button class="btn-action btn-edit" onclick="editStudent(${student.id})">Edit</button>
+              <button class="btn-action btn-delete" onclick="deleteStudent(${student.id})">Delete</button>
+            </div>
+          </td>
+        `;
+        studentTableBody.appendChild(row);
+      });
+
+      updateStats();
+    }
+
+    // Handle Form Submit (Add or Update)
+    studentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('studentName').value.trim();
+      const id = parseInt(document.getElementById('rollNo').value.trim());
+      const branch = document.getElementById('branch').value;
+      const marks = parseInt(document.getElementById('marks').value);
+      const editIdx = parseInt(editIndexInput.value);
+
+      // Check for duplicate Roll Number (skip if editing same student)
+      const existingIndex = students.findIndex(s => s.id === id);
+      if (existingIndex !== -1 && existingIndex !== editIdx) {
+        alert("A student with this Roll Number already exists!");
+        return;
+      }
+
+      if (editIdx === -1) {
+        // Add new
+        students.push({ id, name, branch, marks });
+      } else {
+        // Update existing
+        students[editIdx] = { id, name, branch, marks };
+      }
+
+      saveToLocalStorage();
+      filterAndRender();
+      resetForm();
+    });
+
+    function editStudent(id) {
+      const index = students.findIndex(s => s.id === id);
+      if (index === -1) return;
+
+      const student = students[index];
+      document.getElementById('studentName').value = student.name;
+      document.getElementById('rollNo').value = student.id;
+      document.getElementById('branch').value = student.branch;
+      document.getElementById('marks').value = student.marks;
+      editIndexInput.value = index;
+
+      formTitle.innerText = "Edit Student Record";
+      submitBtn.innerText = "Update Student";
+      cancelBtn.style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetForm() {
+      studentForm.reset();
+      editIndexInput.value = "-1";
+      formTitle.innerText = "Add New Student";
+      submitBtn.innerText = "Add Student";
+      cancelBtn.style.display = "none";
+    }
+
+    function deleteStudent(id) {
+      if (confirm(`Are you sure you want to delete student record #${id}?`)) {
+        students = students.filter(student => student.id !== id);
+        saveToLocalStorage();
+        filterAndRender();
+      }
+    }
+
+    // Sorting Functionality
+    function sortTable(column) {
+      if (currentSort.column === column) {
+        currentSort.asc = !currentSort.asc;
+      } else {
+        currentSort.column = column;
+        currentSort.asc = true;
+      }
+
+      students.sort((a, b) => {
+        let valA = a[column];
+        let valB = b[column];
+
+        if (typeof valA === 'string') {
+          valA = valA.toLowerCase();
+          valB = valB.toLowerCase();
+        }
+
+        if (valA < valB) return currentSort.asc ? -1 : 1;
+        if (valA > valB) return currentSort.asc ? 1 : -1;
+        return 0;
+      });
+
+      filterAndRender();
+    }
+
+    // Combined Search and Filter Logic
+    function filterAndRender() {
+      const query = searchInput.value.toLowerCase().trim();
+      const selectedBranch = branchFilter.value;
+
+      const filtered = students.filter(student => {
+        const matchesSearch = student.name.toLowerCase().includes(query) || 
+                              student.id.toString().includes(query);
+        const matchesBranch = selectedBranch === "" || student.branch === selectedBranch;
+        return matchesSearch && matchesBranch;
+      });
+
+      renderStudents(filtered);
+    }
+
+    searchInput.addEventListener('input', filterAndRender);
+    branchFilter.addEventListener('change', filterAndRender);
+
+    // Initial load
+    renderStudents();
+  </script>
+</body>
+</html>
